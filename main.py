@@ -4,6 +4,7 @@ from torch import autocast
 import torch
 import tempfile
 from pydantic import BaseModel
+from io import BytesIO
 from PIL import Image
 
 
@@ -62,6 +63,36 @@ async def generar_imagen(request: Request):
             contenido_imagen = f.read()
 
         # Devolver el contenido de la imagen como respuesta
+        return Response(content=contenido_imagen, media_type="image/png")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/generar-imagen-imagen")
+async def generar_imagen_imagen(imagen: UploadFile = File(...), prompt: str = "A beautiful landscape"):
+    try:
+        # Leer y convertir la imagen de entradas
+        imagen_bytes = await imagen.read()
+        imagen_base = Image.open(BytesIO(imagen_bytes)).convert("RGB")
+
+        # Configura los parámetros de generación, por ejemplo el nivel de fuerza (strength) de la transformación
+        strength = 0.75  # Puedes ajustar este valor para cambiar el nivel de modificación de la imagen
+        guidance_scale = 7.5  # Ajusta este parámetro para controlar la creatividad
+
+        # Realizar la transformación de imagen a imagen
+        with autocast("cuda" if torch.cuda.is_available() else "cpu"):
+            imagen_generada = pipe(prompt=prompt, image=imagen_base, strength=strength, guidance_scale=guidance_scale).images[0]
+
+        # Guardar la imagen generada en un archivo temporal
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
+            imagen_generada.save(tmp.name)
+            ruta_imagen = tmp.name
+
+        # Leer el contenido de la imagen generada
+        with open(ruta_imagen, "rb") as f:
+            contenido_imagen = f.read()
+
+        # Devolver la imagen generada como respuesta
         return Response(content=contenido_imagen, media_type="image/png")
 
     except Exception as e:

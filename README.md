@@ -61,17 +61,17 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
     ```bash: uvicorn main:app --reload```
     
 
-    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/launch_api.png?token=GHSAT0AAAAAACZ4QQKAO4UD3JS43VC5U6DWZZHOZWA)
+    ![Mi imagen](![alt text](image.png))
 
     Cuando ejecutes el comando si es la primera vez tardara un tiempo en lo que descarga el modelo Stable Diffusion que se usara para desplegar esta aplicación, debes tener paciencia:
 
-    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/api_loading.png?token=GHSAT0AAAAAACZ4QQKA2X3OQ6P3TIGSC2JEZZHOZJQ)
+    ![Mi imagen](https://i.imgur.com/w25tLH0.png)
 
     Una vez se halla terminado de ejecutar el servidor deberia estar en funcionando correctamente:
 
-    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/api_fullcharged.png?token=GHSAT0AAAAAACZ4QQKBCWBXVU4OOKXBXJAKZZHOY6A)
+    ![Mi imagen](https://i.imgur.com/bWFzx0u.png)
 
-5. **Postman Testing**
+5. **Postman Testing text-to-image**
 
     Para empezar a probar se sugiere usar postman o un software similar, ten en cuenta que la direccion ip en la que el servidor se ejecuta es la siguiente ```http://127.0.0.1:8000```, la primera solicitud de imagen que se va a realiar va a ser por medio de un **promt**, como el metodo que vamos a recibir es un request lo que haremos es enviar un json con el cuerpo del **promt**.
     
@@ -81,30 +81,65 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
 
     La direccion que usaremos para enviar el primer request es la siguiente: ```http://127.0.0.1:8000/generar-imagen-texto``` y como cuerpo se debe enviar un json ```{"texto": "a dog with a hat"}```:
 
-    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/1-postman-testing.png?token=GHSAT0AAAAAACZ4QQKAH3MFEN6TL26B6FMMZZHOYUA)
+    ![Mi imagen](https://i.imgur.com/7Y5tl12.png)
 
     Cuando le des al boton **Send** se hara la solicitud formal al servidor, el proceso va a tardar y dependera de si en el computador en el que se le esta ejecutando tiene una o varias **GPU** que soporten **CUDA**, y si el caso es el contrario ejecutara directamente desde la **CPU**, se debe recordar que la generacion de imagen es una operación de redes convulucionales que matematicamente le cuesta mucho a la **CPU** realizar, por eso la mejor opcion es ejecutar este proyecto en un pc con una **GPU** de muy buenas prestaciones que soporte los **CUDA-CORES**.
 
     Cuando se envie el request se verda de esta manera en **Postman**:
 
-    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/1-A-postman-testing.png?token=GHSAT0AAAAAACZ4QQKBADFFSHUXPHTS6IHCZZHOWYA)
+    ![Mi imagen](https://i.imgur.com/vUkJL5s.png)
 
     Y de esta manera en el ide o en este caso en **VSCode**:
 
-    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/1-B-postman-testing.png?token=GHSAT0AAAAAACZ4QQKA25KM2ZRUKMGXO7JYZZHOX6A)
+    ![Mi imagen](https://i.imgur.com/vUkJL5s.png)
 
     Al terminar la generación de imagen por medio de un promt se vera asi en **Postman**:
 
-    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/1-C-postman-testing.png?token=GHSAT0AAAAAACZ4QQKAJHJW3WYBBDFD4LECZZHOYHA)
+    ![Mi imagen](https://i.imgur.com/qApt5kV.png)
 
     La imagen que esta abajo es la que el modelo de **Stable Diffusion** creo.
 
+## Disclaimer
 
-    ## To-Do
+Algunas pruebas se estaran relaizandoi en un entorno controlado como lo es **Google Colab** ya que localmente el computador en el que se esta desarrollando la prueba no tiene el hardware sufiente para apoyarse en el modelo de **stable-diffusion-v1-5** para poder generar las imagenes que se requieren, ya que exige un gran consumo de unidades de procesamiento **CUDA-CORES**
 
-    1. Crear el metodo especializado para generar una imagen a partir de una imagen.
-    2. Implementar seguridad a la API.
-    3. Realizar conexiones con bases de datos non-sql.
-    4. Implementar StreamLit para prototipar un front-end muy rapido.
-    5. Dockerizar el proyecto.
-    6. Desplegar el proyecto en algún servicio cloud como **AWS**, **Google Platform**.
+---
+## Image to Image (Code-Test)
+
+Como se menciona en el disclaimer el computardor en el que se estan desarrollando las pruebas no tiene la capacidad de computo para poder generar las imagenes de una forma rapida, lo que se hizo fue pagar por una cuenta **Google Colab PRO** con el proposito de poder aprovechar de mejor manera la potencia de estos entornos; Esto generara en este proyecto dos formas de testing una de forma local (lento) y otro en un cuaderno o notebook con el paso a paso de como hacerlo y la explicacion de las tecnologías escogidas para ese proposito, a continuacion se relaciona el cuaderno generado para que sea usado:
+
+```git clone https://github.com/KemmerDesign/IAGeneratorGC.git```
+
+Tenga en cuenta que la asignación de recursos por lo menos en **Google Colab** se da bajo demanda, esto quiere decir que si en el momento en el que se hagan las pruebas y usted no disponga de una cuenta PRO, es muy probable que le asignen un entorno de solo ejecucion de **CPU**, si se lo puede permitir es mejor que pague por unidades de computo o un plan mensual.
+
+A continuacion se muestran las pruebas realizadas desde **Google Colab Pro** de la API:
+
+El cuaderno en este punto viene el paso a paso y las tecnologias que se van a usar, por favor ejecutelo de manera sistematica, **pero tenga en cuenta que el usamos NGrok para generar una tunelizacion para poder hacer el testing desde PostMan (en este caso)** asi tenga en cuenta este paso:
+
+![Mi imagen](https://i.imgur.com/XaywPVL.png)
+
+En los recuadros rojo de la iamgen se muestra el link publico que genera NGrok para poder hacer los test desde **PostMan**:
+
+![Mi imagen](https://i.imgur.com/tVtNN9Z.png)
+
+Estos imagenes son algunos **response** que se generaron desde **Google Colab**:
+**URL para enviar el texto como (json) de este endpoint**
+
+```https://2f96-34-125-9-203.ngrok-free.app/generar-imagen-texto ```
+
+![Mi imagen](https://i.imgur.com/Y6a2p79.png)
+
+**URL para enviar el Body/from-data de este endpoint**
+
+```https://2f96-34-125-9-203.ngrok-free.app/generar-imagen-imagen```
+![Mi imagen](https://i.imgur.com/gtpBEVW.png)
+
+Como se puede ver en la imagen se aprovecha el link de NGrok para correlo en postman, sin embargo el modelo tiene una fuerte tendencia a alucinar, **los parametros se deben reevaluar para validar que sucede o por que suce esto.**
+
+
+## To-Do
+1. Implementar seguridad a la API.
+3. Realizar conexiones con bases de datos non-sql.
+4. Implementar StreamLit para prototipar un front-end muy rapido.
+5. Dockerizar el proyecto.
+6. Desplegar el proyecto en algún servicio cloud como **AWS**, **Google Platform**.
