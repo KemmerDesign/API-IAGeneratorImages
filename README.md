@@ -87,7 +87,7 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
 
     Cuando se envie el request se verda de esta manera en **Postman**:
 
-    ![Mi imagen](img\readme\1-A-postman-testing.png)
+    ![Mi imagen](https://drive.google.com/file/d/1Tw-KiQFh5XD521eRWGGXyRePrctoGSUX/view?usp=sharing)
 
     Y de esta manera en el ide o en este caso en **VSCode**:
 
