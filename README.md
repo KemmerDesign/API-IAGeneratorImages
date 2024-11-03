@@ -61,15 +61,15 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
     ```bash: uvicorn main:app --reload```
     
 
-    ![Mi imagen](img\readme\launch_api.png)
+    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/launch_api.png?token=GHSAT0AAAAAACZ4QQKAO4UD3JS43VC5U6DWZZHOZWA)
 
     Cuando ejecutes el comando si es la primera vez tardara un tiempo en lo que descarga el modelo Stable Diffusion que se usara para desplegar esta aplicación, debes tener paciencia:
 
-    ![Mi imagen](img\readme\api_loading.png)
+    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/api_loading.png?token=GHSAT0AAAAAACZ4QQKA2X3OQ6P3TIGSC2JEZZHOZJQ)
 
     Una vez se halla terminado de ejecutar el servidor deberia estar en funcionando correctamente:
 
-    ![Mi imagen](img\readme\api_fullcharged.png)
+    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/api_fullcharged.png?token=GHSAT0AAAAAACZ4QQKBCWBXVU4OOKXBXJAKZZHOY6A)
 
 5. **Postman Testing**
 
@@ -81,21 +81,21 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
 
     La direccion que usaremos para enviar el primer request es la siguiente: ```http://127.0.0.1:8000/generar-imagen-texto``` y como cuerpo se debe enviar un json ```{"texto": "a dog with a hat"}```:
 
-    ![Mi imagen](img\readme\1-postman-testing.png)
+    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/1-postman-testing.png?token=GHSAT0AAAAAACZ4QQKAH3MFEN6TL26B6FMMZZHOYUA)
 
     Cuando le des al boton **Send** se hara la solicitud formal al servidor, el proceso va a tardar y dependera de si en el computador en el que se le esta ejecutando tiene una o varias **GPU** que soporten **CUDA**, y si el caso es el contrario ejecutara directamente desde la **CPU**, se debe recordar que la generacion de imagen es una operación de redes convulucionales que matematicamente le cuesta mucho a la **CPU** realizar, por eso la mejor opcion es ejecutar este proyecto en un pc con una **GPU** de muy buenas prestaciones que soporte los **CUDA-CORES**.
 
     Cuando se envie el request se verda de esta manera en **Postman**:
 
-    ![Mi imagen](https://drive.google.com/file/d/1Tw-KiQFh5XD521eRWGGXyRePrctoGSUX/view?usp=sharing)
+    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/1-A-postman-testing.png?token=GHSAT0AAAAAACZ4QQKBADFFSHUXPHTS6IHCZZHOWYA)
 
     Y de esta manera en el ide o en este caso en **VSCode**:
 
-    ![Mi imagen](img\readme\1-B-postman-testing.png)
+    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/1-B-postman-testing.png?token=GHSAT0AAAAAACZ4QQKA25KM2ZRUKMGXO7JYZZHOX6A)
 
     Al terminar la generación de imagen por medio de un promt se vera asi en **Postman**:
 
-    ![Mi imagen](img\readme\1-C-postman-testing.png)
+    ![Mi imagen](https://raw.githubusercontent.com/KemmerDesign/API-IAGeneratorImages/refs/heads/main/img/readme/1-C-postman-testing.png?token=GHSAT0AAAAAACZ4QQKAJHJW3WYBBDFD4LECZZHOYHA)
 
     La imagen que esta abajo es la que el modelo de **Stable Diffusion** creo.
 
