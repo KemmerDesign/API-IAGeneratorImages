@@ -50,6 +50,7 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
     pip install python-dotenv
     pip install python-multipart
     pip install accelerate
+    pip install python-jose[cryptography]
     python.exe -m pip install --upgrade pip
     ```
     Asegúrate de estar en la terminal, en el directorio donde se encuentra el archivo **main.py**, y con el entorno virtual activado. Luego, ejecuta el siguiente comando para iniciar el servidor de FastAPI:
@@ -74,7 +75,25 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
 5. **Postman Testing text-to-image**
 
     Para empezar a probar se sugiere usar postman o un software similar, ten en cuenta que la direccion ip en la que el servidor se ejecuta es la siguiente ```http://127.0.0.1:8000```, la primera solicitud de imagen que se va a realiar va a ser por medio de un **promt**, como el metodo que vamos a recibir es un request lo que haremos es enviar un json con el cuerpo del **promt**.
+
+    Como la seguridad ya fue implementada de forma parcial para empezar a hacer los test se tendra que tener en cuenta lo siguiente:
+
+    **EndPoint '/token'**
+
+    Desde acá gestionaremos los token necesarios para poder usar la aplicación en este punto el usuario estara simulado y hardcodeado mientras que se realizan las conexiones pertinentes a la base de datos, empezamos entonces por solcitar el token desde postman:
+
+    Debemos usar un **Body** del tipo **x-www-form-urlencoded** que nos va a permitir almacenar el token de autenticación, y le pasamos los parametros **username | testuser** y **password | cualquier_contraseña**, que en este momento son los datos hardcodeados en la API.
     
+    ![Mi imagen](https://i.imgur.com/6qRcUKk.png)
+
+    Para poder usar cualquier EndPoint de manera adecuada se debe asegurar que en las solicitudes ingreses el token generado, de otra forma te va a lanzar credential_exception:
+    
+    ![Mi imagen](https://i.imgur.com/VPuXT0O.png)
+
+    Y en el cuerpo **raw** puedes enviar el JSON con el promt:
+    
+    ![Mi imagen](https://i.imgur.com/tEEhslR.png)
+
     ## Disclaimer
     Por ahora el promt que debe recibir esta API tiene que estar redactado en ingles, de otra manera nos va a arrojar error.
     ---
@@ -139,7 +158,7 @@ Como se puede ver en la imagen se aprovecha el link de NGrok para correlo en pos
 
 ## To-Do
 1. Implementar seguridad a la API.
-3. Realizar conexiones con bases de datos non-sql.
-4. Implementar StreamLit para prototipar un front-end muy rapido.
-5. Dockerizar el proyecto.
-6. Desplegar el proyecto en algún servicio cloud como **AWS**, **Google Platform**.
+1. Realizar conexiones con bases de datos non-sql.
+2. Implementar StreamLit para prototipar un front-end muy rapido.
+3. Dockerizar el proyecto.
+4. Desplegar el proyecto en algún servicio cloud como **AWS**, **Google Platform**.

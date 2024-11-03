@@ -6,36 +6,48 @@ import tempfile
 from pydantic import BaseModel
 from io import BytesIO
 from PIL import Image
-
-
-def descargar_modelo_stable_diffusion():
-    """
-    Descarga el modelo de Stable Diffusion desde Hugging Face Hub usando diffusers.
-    """
-    print("Descargando modelo desde Hugging Face Hub...")
-    if torch.cuda.is_available():
-        # Si hay GPU, carga el modelo en `float16`
-        pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5", torch_dtype=torch.float16)
-        pipe = pipe.to("cuda")
-    else:
-        # Si solo hay CPU, carga el modelo en `float32`
-        pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5")
-        pipe = pipe.to("cpu")
-    print("Modelo descargado correctamente.")
-    return pipe
+from datetime import datetime, timedelta
+from jose import JWTError, jwt
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+import utils as utilsAIG #archivo creado para manejar para manipular funciones secundarias.
+from utils_security import crear_access_token, obtener_usuario_actual, Usuario, obtener_usuario# Importar funciones de utils_security.py
+from fastapi.security import OAuth2PasswordRequestForm
 
 
 # Carga el modelo de Stable Diffusion
-pipe = descargar_modelo_stable_diffusion()
+pipe = utilsAIG.descargar_modelo_stable_diffusion()
 
 app = FastAPI()
+
+async def autenticar_usuario(username: str, password: str):
+    # Simula la autenticación del usuario
+    # En este ejemplo, se autentica al usuario si el nombre de usuario es "testuser" y la contraseña es "cualquier_contraseña"
+    usuario_correcto = await obtener_usuario(username)
+    if usuario_correcto is not None and password == "cualquier_contraseña":
+        return usuario_correcto
+    return None
+
+@app.post("/token")
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    # Aquí debes implementar la lógica para autenticar al usuario
+    # con tu base de datos (que veremos más adelante)
+    usuario = await autenticar_usuario(form_data.username, form_data.password)  
+    if not usuario:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token = crear_access_token(data={"sub": usuario.username})
+    return {"access_token": access_token, "token_type": "bearer"}
 
 @app.get("/")
 async def root():
     return {"message": "Hola! Bienvenido a la API de generación de imágenes."}
 
 @app.post("/generar-imagen-texto")
-async def generar_imagen(request: Request):
+async def generar_imagen(request: Request, usuario_actual: Usuario = Depends(obtener_usuario_actual)):
     try:
         #Convertimos el request a un objeto diferente extrayendo el cuerpo del json.
         data = await request.json()
@@ -69,7 +81,7 @@ async def generar_imagen(request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/generar-imagen-imagen")
-async def generar_imagen_imagen(imagen: UploadFile = File(...), prompt: str = "A beautiful landscape"):
+async def generar_imagen_imagen(imagen: UploadFile = File(...), prompt: str = "A beautiful landscape", usuario_actual: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Leer y convertir la imagen de entradas
         imagen_bytes = await imagen.read()
