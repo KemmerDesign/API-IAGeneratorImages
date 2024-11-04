@@ -1,4 +1,7 @@
 from diffusers import StableDiffusionPipeline
+from passlib.context import CryptContext
+import firebase_admin
+from firebase_admin import credentials, firestore, auth
 import torch
 
 def descargar_modelo_stable_diffusion():
@@ -16,3 +19,12 @@ def descargar_modelo_stable_diffusion():
         pipe = pipe.to("cpu")
     print("Modelo descargado correctamente.")
     return pipe
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def verify_password(plain_password: str, hashed_password: str):
+    
+    return pwd_context.verify(plain_password, hashed_password) 
+
+def hash_password(password: str):
+    return pwd_context.hash(password)

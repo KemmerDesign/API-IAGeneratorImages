@@ -3,6 +3,8 @@ from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
+from firebase_admin import credentials, firestore, auth, initialize_app
+from jose import JWTError, jwt
 
 
 # Configurando las claves basicas para manipular el acceso a la data.
@@ -30,26 +32,28 @@ def crear_access_token(data: dict):#Recibimos un objeto del tipo diccionario que
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM) #En esta linea es donde generamos el token de acceso a la sesion que vamos a crear.
     return encoded_jwt #Aca devolvemos el token 
 
-def obtener_usuario_actual(token: str = Depends(oauth2_scheme)):
-    #Acá manejamos excepcion de usuario por enede token no autorizado
+
+async def obtener_usuario_actual(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        #acá validamos que el usuario no este vacio
-        if username is None:
-            raise credentials_exception
-        #Al llegar aca se demostro que el username que esta llegando no esta vacio asi que 
-        #procede a buscar el usuario con el metodo que asignamos
-        usuario = obtener_usuario(username)
-        #Si el usuario no fue encontrado y esta vacio lanza la excepcion
+        # Verifica el token de ID de Firebase
+        try:
+            decoded_token = auth.verify_id_token(token)
+            uid: str = decoded_token['uid']  # Obtén el UID del token decodificado
+        except (auth.InvalidIdTokenError, auth.ExpiredIdTokenError, auth.RevokedIdTokenError, ValueError) as e:
+            print(f"Error al verificar el token de Firebase: {e}")
+            raise credentials_exception from e
+
+        # Obtén el usuario de tu base de datos usando el UID
+        usuario = obtener_usuario(uid) 
         if usuario is None:
             raise credentials_exception
-        #acá devuelve el usuario por que fue encontrado.
         return usuario
-    except JWTError:
-        raise credentials_exception
+
+    except JWTError as e:  # Esta excepción ya no debería ocurrir, pero la dejamos por si acaso
+        print(f"Error al decodificar el token JWT: {e}")
+        raise credentials_exception from e

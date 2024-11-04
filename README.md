@@ -51,6 +51,10 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
     pip install python-multipart
     pip install accelerate
     pip install python-jose[cryptography]
+    pip install firebase-admin
+    pip install passlib
+    pip install bcrypt
+    pip install Pyrebase
     python.exe -m pip install --upgrade pip
     ```
     Asegúrate de estar en la terminal, en el directorio donde se encuentra el archivo **main.py**, y con el entorno virtual activado. Luego, ejecuta el siguiente comando para iniciar el servidor de FastAPI:
@@ -91,7 +95,7 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
     ![Mi imagen](https://i.imgur.com/VPuXT0O.png)
 
     Y en el cuerpo **raw** puedes enviar el JSON con el promt:
-    
+
     ![Mi imagen](https://i.imgur.com/tEEhslR.png)
 
     ## Disclaimer
@@ -157,7 +161,6 @@ Como se puede ver en la imagen se aprovecha el link de NGrok para correlo en pos
 
 
 ## To-Do
-1. Implementar seguridad a la API.
 1. Realizar conexiones con bases de datos non-sql.
 2. Implementar StreamLit para prototipar un front-end muy rapido.
 3. Dockerizar el proyecto.
