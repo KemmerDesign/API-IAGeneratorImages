@@ -15,6 +15,7 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
   <img src="https://miro.medium.com/v2/resize:fit:1400/1*Rbq9cDCJpGq7HKeNAeIitg.jpeg" alt="StableDiffusion" width="100px">
   <img src="https://quansight.com/wp-content/uploads/2023/09/PyTorch-logo.jpg" alt="PyTorch" width="100px">
   <img src="https://firebase.google.com/images/social.png" alt="Firebase" width="100px">
+  <img src="https://eu-images.contentstack.com/v3/assets/blt6b0f74e5591baa03/blt7c0bf7e21d4410b4/6319700b8cc2fa14e223aa27/8895.png" alt="Streamlit" width="100px">
 </div>
 
 * **FastAPI:** Framework web moderno y de alto rendimiento para construir APIs en Python.
@@ -57,12 +58,14 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
     pip install passlib
     pip install bcrypt
     pip install Pyrebase
+    pip install streamlit
     python.exe -m pip install --upgrade pip
     ```
     Asegúrate de estar en la terminal, en el directorio donde se encuentra el archivo **main.py**, y con el entorno virtual activado. Luego, ejecuta el siguiente comando para iniciar el servidor de FastAPI:
 
-4. **Lanzando la API**
+4. **Lanzando la API (FastAPI / Streamlit)**
 
+    **FastAPI**
     Debes revisar que estando en la terminal estas en el mismo directorio en el que esta el archivo **main.py**, y adicional verifica que tienes el entorno de ejecución activado, el comando para lanzar el servidor es el siguiente:
 
     ```bash: uvicorn main:app --reload```
@@ -76,6 +79,19 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
     Una vez se halla terminado de ejecutar el servidor deberia estar en funcionando correctamente:
 
     ![Mi imagen](https://i.imgur.com/bWFzx0u.png)
+
+    **Streamlit**
+
+    En una nueva terminal se puede ejecutar Streamlit con la siguiente linea de comandos ```bash: streamlit run views/frontend.py``` en este caso el archivo **frontend.py** esta dentro de la carpeta views, si se llega a mover este archivo por favor tener en cuenta a que lugar se mueve para ejecutar esa linea de comandos:
+
+    ![Mi imagen](https://i.imgur.com/6tFlv2S.png)
+
+    En la mayoría de los casos se abrira una pagina web con la pagina renderizada para poder empezar usarla, en el caso que no en la terminal de ejecucion se suministra el **URL = htt9://192.16.2.22:8501** que es el lugar en la que se aloja la web para poder ser consultada:
+    
+    ![Mi imagen](https://i.imgur.com/Up28twy.png)
+
+    ## Disclaimer
+        Las funciones de generacion de imagenes no funcionara a menos que que no se haga loggin y se contraste el usuario en **Firestore DB**, si se desea aprovechar este mismo flujo de trabajo por solicitar tanto el **JSON** de logeo a **Firebase** y las **API - Credenciales** para poder trabajar esta, en caso contrario pueden inscribirse en **Firebase** crear las colecciones necesarias, extraer las API Key y JSON necesarios para poder trabajar con esta APP.
 
 5. **Postman Testing text-to-image**
 
@@ -162,6 +178,5 @@ Como se puede ver en la imagen se aprovecha el link de NGrok para correlo en pos
 
 
 ## To-Do
-1. Implementar StreamLit o similar para prototipar un front-end muy rapido.
-2. Dockerizar el proyecto.
-3. Desplegar el proyecto en algún servicio cloud como **AWS**, **Google Platform**.
+1. Dockerizar el proyecto.
+2. Desplegar el proyecto en algún servicio cloud como **AWS**, **Google Platform**.
