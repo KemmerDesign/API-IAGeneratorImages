@@ -33,7 +33,7 @@ firebase_app = firebase_admin.initialize_app(cred)
 #Obtenemos una instancia de la base de datos:
 db = firestore.client()
 
-load_dotenv(dotenv_path='.venv/.venv')
+load_dotenv(dotenv_path='env.list')
 API_KEY = os.getenv("FIREBASE_API_KEY")
 
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
