@@ -5,20 +5,18 @@ import tempfile
 from io import BytesIO
 from PIL import Image
 from fastapi import Depends, HTTPException, status
-import models.utils as utilsAIG #archivo creado para manejar para manipular funciones secundarias.
-from models.utils_security import crear_access_token, obtener_usuario_actual, Usuario, obtener_usuario# Importar funciones de utils_security.py
+import models.utils as utilsAIG  # archivo creado para manejar para manipular funciones secundarias.
+from models.auth import obtener_usuario_actual, Usuario  # Importa desde auth.py
 from fastapi.security import OAuth2PasswordRequestForm
 import firebase_admin
-from firebase_admin import credentials, firestore, auth, initialize_app
-from firebase_admin.exceptions import FirebaseError 
-from passlib.context import CryptContext
+from firebase_admin import credentials, firestore, auth
+from firebase_admin.exceptions import FirebaseError
 from pydantic import BaseModel
-from models.utils import hash_password, verify_password
 import re
 import os
 import requests
 from dotenv import load_dotenv
-
+import base64
 
 
 class Token(BaseModel):
@@ -91,10 +89,23 @@ async def generar_imagen_te(request: Request, usuario_actual: Usuario = Depends(
         # Leer el contenido de la imagen
         with open(ruta_imagen, "rb") as f:
             contenido_imagen = f.read()
+        
+        with open(ruta_imagen, "rb") as f:
+            imagen_base64 = base64.b64encode(f.read()).decode()
+
+        db = firestore.client()
+        doc_ref = db.collection('imagenes_texto').document()  # Crea un nuevo documento con un ID autogenerado
+        doc_ref.set({
+            'usuario_id': usuario_actual.username,
+            'prompt': texto,
+            'imagen_base64': imagen_base64,
+            'fecha_creacion': firestore.SERVER_TIMESTAMP  # Usa la marca de tiempo del servidor
+        })
 
         # Devolver el contenido de la imagen como respuesta
         return Response(content=contenido_imagen, media_type="image/png")
 
+        
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -121,6 +132,22 @@ async def generar_imagen_imagen(imagen: UploadFile = File(...), prompt: str = "A
         # Leer el contenido de la imagen generada
         with open(ruta_imagen, "rb") as f:
             contenido_imagen = f.read()
+
+        with open(ruta_imagen, "rb") as f:
+            imagen_generada_base64 = base64.b64encode(f.read()).decode()
+
+        imagen_base_base64 = base64.b64encode(imagen_bytes).decode()
+
+        # Guardar las imágenes y el prompt en Firestore
+        db = firestore.client()
+        doc_ref = db.collection('imagenes_imagen').document()
+        doc_ref.set({
+            'usuario_id': usuario_actual.username,
+            'prompt': prompt,
+            'imagen_base_base64': imagen_base_base64,
+            'imagen_generada_base64': imagen_generada_base64,
+            'fecha_creacion': firestore.SERVER_TIMESTAMP
+        })
 
         # Devolver la imagen generada como respuesta
         return Response(content=contenido_imagen, media_type="image/png")

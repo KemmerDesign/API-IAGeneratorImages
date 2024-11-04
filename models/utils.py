@@ -2,6 +2,7 @@ from diffusers import StableDiffusionPipeline
 from passlib.context import CryptContext
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
+
 import torch
 
 def descargar_modelo_stable_diffusion():
@@ -28,3 +29,4 @@ def verify_password(plain_password: str, hashed_password: str):
 
 def hash_password(password: str):
     return pwd_context.hash(password)
+

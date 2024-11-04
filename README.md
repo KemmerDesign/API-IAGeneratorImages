@@ -14,11 +14,13 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
   <img src="https://cosasdedevs.com/media/sections/images/fastapi.png" alt="FastAPI" width="100px">
   <img src="https://miro.medium.com/v2/resize:fit:1400/1*Rbq9cDCJpGq7HKeNAeIitg.jpeg" alt="StableDiffusion" width="100px">
   <img src="https://quansight.com/wp-content/uploads/2023/09/PyTorch-logo.jpg" alt="PyTorch" width="100px">
+  <img src="https://firebase.google.com/images/social.png" alt="Firebase" width="100px">
 </div>
 
 * **FastAPI:** Framework web moderno y de alto rendimiento para construir APIs en Python.
 * **Stable Diffusion:** Modelo de aprendizaje automático de última generación para la generación de imágenes a partir de texto.
 * **PyTorch:** Librería de aprendizaje profundo que proporciona flexibilidad y velocidad para el entrenamiento y la inferencia de modelos como Stable Diffusion.
+* **Firebase:** es la plataforma elegida para este proyecto por su facilidad de integración y la variedad de servicios que ofrece. Firestore, su base de datos NoSQL,  permite un desarrollo ágil gracias a su estructura flexible y escalabilidad automática. Además,  Firestore facilita la sincronización de datos en tiempo real, ideal para aplicaciones colaborativas o que requieren actualizaciones instantáneas, con la ventaja de un manejo eficiente del almacenamiento y la posibilidad de trabajar sin conexión.
 
 
 ## Configuración:
@@ -65,8 +67,7 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
 
     ```bash: uvicorn main:app --reload```
     
-
-    ![Mi imagen](![alt text](image.png))
+    ![alt text](image.png)
 
     Cuando ejecutes el comando si es la primera vez tardara un tiempo en lo que descarga el modelo Stable Diffusion que se usara para desplegar esta aplicación, debes tener paciencia:
 
@@ -161,7 +162,6 @@ Como se puede ver en la imagen se aprovecha el link de NGrok para correlo en pos
 
 
 ## To-Do
-1. Realizar conexiones con bases de datos non-sql.
-2. Implementar StreamLit para prototipar un front-end muy rapido.
-3. Dockerizar el proyecto.
-4. Desplegar el proyecto en algún servicio cloud como **AWS**, **Google Platform**.
+1. Implementar StreamLit o similar para prototipar un front-end muy rapido.
+2. Dockerizar el proyecto.
+3. Desplegar el proyecto en algún servicio cloud como **AWS**, **Google Platform**.
