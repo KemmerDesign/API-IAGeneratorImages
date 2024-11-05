@@ -23,8 +23,12 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
 * **PyTorch:** Librería de aprendizaje profundo que proporciona flexibilidad y velocidad para el entrenamiento y la inferencia de modelos como Stable Diffusion.
 * **Firebase:** es la plataforma elegida para este proyecto por su facilidad de integración y la variedad de servicios que ofrece. Firestore, su base de datos NoSQL,  permite un desarrollo ágil gracias a su estructura flexible y escalabilidad automática. Además,  Firestore facilita la sincronización de datos en tiempo real, ideal para aplicaciones colaborativas o que requieren actualizaciones instantáneas, con la ventaja de un manejo eficiente del almacenamiento y la posibilidad de trabajar sin conexión.
 
+Esquema general del proyecto:
 
-## Configuración:
+
+![esquema general](https://i.imgur.com/aLym4r5.png)
+
+## Configuración (GIT-HUB):
 
 1. **Clonar el repositorio:**
 
@@ -57,7 +61,6 @@ Esta API, desarrollada con FastAPI, te permite generar imágenes a partir de tex
     pip install firebase-admin
     pip install passlib
     pip install bcrypt
-    pip install Pyrebase
     pip install streamlit
     python.exe -m pip install --upgrade pip
     ```
@@ -177,6 +180,14 @@ Estos imagenes son algunos **response** que se generaron desde **Google Colab**:
 Como se puede ver en la imagen se aprovecha el link de NGrok para correlo en postman, sin embargo el modelo tiene una fuerte tendencia a alucinar, **los parametros se deben reevaluar para validar que sucede o por que suce esto.**
 
 
+6. ## Persistencia (Base da datos - resultados)
+
+    El EndPoint **"/generar-imagen-texto"** tiene implementada la funcionalidad para guardar las imagenes en la base datos, la imagen se va como una cadena de texto **image_base64**, para consultar las imagenes guardas se tienen que transformar en un formato tipo png o jpg
+
+    ![Firebase](https://i.imgur.com/kVMm3YC.png)
+
+    La base de datos actual es NoSQL, el metodo de generar **image-to-image** no esta bien implementada debido a que cuando la imagen es grande al transformarla en un **image_base64** la cadena de texto es muy larga y no la puede guarda la BD, la opcion es guardarla en un modulo de firebase llamada **Storage**.
+
 ## To-Do
-1. Dockerizar el proyecto.
-2. Desplegar el proyecto en algún servicio cloud como **AWS**, **Google Platform**.
+1. Desplegar el proyecto en algún servicio cloud como **AWS**, **Google Platform**.
+2. Configurar EndPoint para consultar imagenes en la base de datos.
